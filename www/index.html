@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Welcome to TakeTwoResearch</title>
+	<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/indexStyle.css"></link>
+	<script src="js/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="js/IndexScript.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="shortcut icon" type="image/png" href="favicon.png"/>
+</head>
+<body>
+	<div class="welcomePage">
+		<h1>TakeTwoResearch</h1>
+		<form>
+			<div class="wrapper">      
+				<input class="finput" type="text" placeholder="First Name">
+				<span class="funderline"></span>     
+				<input class="linput" type="text" placeholder="Last Name">
+				<span class="lunderline"></span>
+				<select name="projectSelect" id="projectSelect">
+					<option>Activity</option>
+					<option value="1">Projectile Motion</option>
+				</select>
+				<span class="punderline"></span>
+				<button type="button" id="submit">Submit</button>
+				<p id="errorText"></p>
+				<input class="einput" type="text" placeholder="Edit password? (Blank for a preview)">
+			</div>
+		</form>
+	</div>
+	<div class="contentPage">
+		<div class="topBar">
+			<h2 class="projectTitle">ProjectTitle</h2>
+			<h2 class="takeTwoResearch">TakeTwoResearch <span style="font-family: Trebuchet MS; font-size: .3em;">v2.3.1</span></h2>
+			<h2 class="loginName">Logged in as </h2>
+		</div>
+		<div class="leftBar">
+			<div class="stepsText">Steps:</div>
+			<ul>
+			</ul>
+		</div>
+		<div class="contentContainer">
+		</div>
+		<div class="hintPanel hide">
+			<p class="hintTitle"></p>
+			<p class="hintText"></p>
+		</div>
+		<button type="button" id="nextStep">Next Step</button>
+		<button type="button" id="prevStep">Previous Step</button>
+	</div>
+</body>
+</html>
