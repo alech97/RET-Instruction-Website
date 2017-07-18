@@ -24,6 +24,7 @@ $(document).ready(function() {
 	//Add event listener to firstName input
 	$(document).on("change keyup paste", ".finput", function() {
 		fName = $(".finput").val().toUpperCase();
+		console.log(fName);
 		if (editors.includes(fName+lName))
 			$(".einput").show();
 		else
@@ -33,6 +34,7 @@ $(document).ready(function() {
 	//Add event listener to lastName input
 	$(document).on("change keyup paste", ".linput", function() {
 		lName = $(".linput").val().toUpperCase();
+		console.log(lName);
 		if (editors.includes(fName+lName))
 			$(".einput").show();
 		else
@@ -76,7 +78,15 @@ $(document).ready(function() {
 		}
 	});
 	
+	//Prevent scroll caching
 	window.scrollTo(0, 0);
+	
+	//Prevent form auto input
+	fName = $(".finput").val().toUpperCase();
+	lName = $(".linput").val().toUpperCase();
+	act = $("#projectSelect").val();
+	
+	console.log(fName, lName);
 });
 
 /**
