@@ -59,34 +59,41 @@ public class TrafficHandler extends HttpServlet {
 				request.getRemoteAddr(), dateAndTime.toString(), user.getPage());
 		
 		response.setContentType("application/json");
-		String check = dataHandler.getPages(
-				user.getActivity(), (user.getEdit() != null && 
-				user.getEdit().equals("T@k3Tw0")) ? 0 : 1);
+		String check = dataHandler.getPages(user.getActivity());
 		System.out.println(check);
 		response.getWriter().write(check);
 		response.getWriter().close();
 	}
 	
+	/**
+	 * This class handles a UserEntry object for data storage
+	 * @author Alec helyar
+	 */
 	private class UserEntry {
 		private String firstName;
 		private String lastName;
 		private String activity;
-		private String edit;
 		private String page;
 		
+		/**
+		 * Default constructor
+		 * @param fName first name
+		 * @param lName last name
+		 * @param act The current activity
+		 * @param page The current page
+		 */
 		@SuppressWarnings("unused")
-		public UserEntry(String fName, String lName, String act, String edit, String page) {
+		public UserEntry(String fName, String lName, String act, String page) {
 			setFirstName(fName);
 			setLastName(lName);
 			setActivity(act);
-			setEdit(edit);
 			setPage(page);
 		}
 		
 		@Override
 		public String toString() {
 			return "First: " + firstName + ", Last: " + 
-					lastName + ", Activity: " + activity + ", Edit: " + edit;
+					lastName + ", Activity: " + activity;
 		}
 
 		/**
@@ -129,20 +136,6 @@ public class TrafficHandler extends HttpServlet {
 		 */
 		public void setActivity(String activity) {
 			this.activity = activity;
-		}
-
-		/**
-		 * @return the edit
-		 */
-		public String getEdit() {
-			return edit;
-		}
-
-		/**
-		 * @param edit the edit to set
-		 */
-		public void setEdit(String edit) {
-			this.edit = edit;
 		}
 
 		/**

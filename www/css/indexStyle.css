@@ -163,6 +163,7 @@ li {
     left: 87%;
     padding: 20px 30px;
     font-size: 1.5em;
+    font-size: 1.2vw;
     box-shadow: 2px 2px 2px black;
     border: 1px solid grey;
     outline: none;
@@ -191,6 +192,7 @@ li {
     left: 88.6%;
     padding: 2px 3px;
     font-size: 1em;
+    font-size: .9vw;
     box-shadow: 2px 2px 2px black;
     border: 1px solid grey;
     outline: none;

@@ -79,11 +79,10 @@ public class DataHandler {
     /**
      * This method returns a List of pages for a given project.
      * @param Project The project of this query.
-     * @param eOrP 0 if Edit and 1 if preview
      * @return Returns a String based upon a list of querried pages.
      */
-    @SuppressWarnings("unchecked")
-	public String getPages(String project, int eOrP) {
+	@SuppressWarnings("unchecked")
+	public String getPages(String project) {
     	Query q = new Query("Page").addSort("order");
     	PreparedQuery pq = datastore.prepare(q);
     	List<Entity> list = pq.asList(FetchOptions.Builder.withChunkSize(10));
@@ -93,7 +92,7 @@ public class DataHandler {
     		Entity e = iter.next();
     		JSONObject jobj = new JSONObject();
     		jobj.put("Name", e.getKey().getName());
-    		jobj.put("URL", (eOrP == 0) ? e.getProperty("editURL") : e.getProperty("URL"));
+    		jobj.put("URL", e.getProperty("URL"));
     		jsonA.add(jobj);
     	}
     	return jsonA.toJSONString();

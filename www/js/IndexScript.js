@@ -24,7 +24,6 @@ $(document).ready(function() {
 	//Add event listener to firstName input
 	$(document).on("change keyup paste", ".finput", function() {
 		fName = $(".finput").val().toUpperCase();
-		console.log(fName);
 		if (editors.includes(fName+lName))
 			$(".einput").show();
 		else
@@ -34,7 +33,6 @@ $(document).ready(function() {
 	//Add event listener to lastName input
 	$(document).on("change keyup paste", ".linput", function() {
 		lName = $(".linput").val().toUpperCase();
-		console.log(lName);
 		if (editors.includes(fName+lName))
 			$(".einput").show();
 		else
@@ -49,6 +47,9 @@ $(document).ready(function() {
 	//Add event listener to submit button
 	$(document).on("click", "#submit", function() {
 		var errorText = "Please enter a valid ", num = 0;
+		
+		fName = $(".finput").val().toUpperCase();
+		lName = $(".linput").val().toUpperCase();
 		
 		//Begin asserting that user info is correct
 		if (fName === "" || !/^[a-zA-Z]+$/.test(fName)) {
