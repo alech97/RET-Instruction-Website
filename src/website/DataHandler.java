@@ -46,15 +46,13 @@ public class DataHandler {
      * This method creates a page for a lesson entity
      * @param page The page being added.
      * @param order The order of this page.
-     * @param editURL The edit url of this page
      * @param URL The final url of this page
      * @param lessonKey The parent lesson of the page
      * @return returns the key of the new page.
      */
-    public Key createPageEntity(String page, int order, String editURL, String URL, String lessonKey) {
+    public Key createPageEntity(String page, int order, String URL, String lessonKey) {
     	Entity newPageEntity = new Entity(PageStr, page, KeyFactory.createKey(LessonStr, lessonKey));
     	newPageEntity.setProperty("order", order);
-    	newPageEntity.setProperty("editURL", editURL);
     	newPageEntity.setProperty("URL", URL);
     	Key pageKey = datastore.put(newPageEntity);
     	return pageKey;
@@ -97,6 +95,17 @@ public class DataHandler {
     	}
     	return jsonA.toJSONString();
     }
+	
+	/**
+	 * This method returns a DataReader of all User datastore entries.
+	 * @param Project The project of this query.
+	 * @return Returns a DataReader for user logs.
+	 */
+	public DataReader getUserLogs(String project) {
+		Query q = new Query("User").addSort("Date");
+    	PreparedQuery pq = datastore.prepare(q);
+		return new DataReader(pq.asList(FetchOptions.Builder.withDefaults()));
+	}
     
     /**
      * This method logs a user datastore value for each user.

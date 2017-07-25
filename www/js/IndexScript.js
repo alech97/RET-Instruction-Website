@@ -12,7 +12,7 @@ var editors = ["ALECHELYAR", "SHAIGERALD", "SHAILICIAGERALD", "BEAUGARDNER",
 var serverReturn = "";
 
 //The current page that the user is on.
-var currPage = 0;
+var currPage = -1;
 
 //This javascript file has been reached
 console.log("File reached");
@@ -24,6 +24,7 @@ $(document).ready(function() {
 	//Add event listener to firstName input
 	$(document).on("change keyup paste", ".finput", function() {
 		fName = $(".finput").val().toUpperCase();
+		console.log($(document).scrollTop());
 		if (editors.includes(fName+lName))
 			$(".einput").show();
 		else
@@ -80,14 +81,10 @@ $(document).ready(function() {
 	});
 	
 	//Prevent scroll caching
-	window.scrollTo(0, 0);
+	$(window).scrollTop(0);
 	
 	//Prevent form auto input
-	fName = $(".finput").val().toUpperCase();
-	lName = $(".linput").val().toUpperCase();
 	act = $("#projectSelect").val();
-	
-	console.log(fName, lName);
 });
 
 /**
@@ -102,7 +99,7 @@ function postDocRequest(retryNum) {
 		type: 'POST',
 		url: 'TrafficHandler',
 		dataType: 'json',
-		data: '{\"firstName\":\"'+fName+'\",\"lastName\":\"'+lName+'\",\"activity\":\"'+act+'\",\"edit\":\"'+edit+'\",\"page\":\"Introduction\"}',
+		data: '{\"firstName\":\"'+fName+'\",\"lastName\":\"'+lName+'\",\"activity\":\"'+act+'\",\"edit\":\"'+edit+'\",\"page\":\"Entry\"}',
 		success: function(ret) {
 			serverReturn = ret;
 			loadGoogleFrames();
@@ -136,43 +133,84 @@ function loadGoogleFrames() {
 	
 	jQuery.each(serverReturn, function(index, page) {
 		var newPage = $("<li id=\"li" + index + "\">" + page.Name + "</li>");
+		$(newPage).css("display", "none");
 		$("ul").append(newPage);
 		
+		var innerDiv = $("<div class='innerContent' id='content" + index + "'></div>");
+		$(innerDiv).css("z-index", serverReturn.length + 4 - index);
+		
 		var newFrame = $("<iframe id=\"frame" + index + 
-				"\" src=\"" + page.URL + "\" scrolling=\"no\"></iframe>");
-		$(".contentContainer").append(newFrame);
+				"\" src=\"" + page.URL + "\"></iframe>");
+		
+		$(innerDiv).append(newFrame);
+		$(".contentContainer").append(innerDiv);
+		
+		console.log(index, page);
 	});
 	
 	$(document).on('click', '#nextStep', function() {
-		console.log("Next Button pressed");
-		if (currPage + 1 < serverReturn.length) {
-			$(".liSelected").removeClass("liSelected");
-			currPage++;
-			$("#li"+currPage).addClass("liSelected");
-			$('html, body').animate({
-				scrollTop: $("#frame" + currPage).offset().top
-			}, 1000);
-			console.log("Curr page: " + currPage);
-			sendRequest();
-		}
+		nextPage();
+		checkButtons();
 	});
 	
 	$(document).on('click', '#prevStep', function() {
-		console.log("Previous button pressed");
-		if (currPage > 0) {
-			$(".liSelected").removeClass("liSelected");
-			currPage--;
-			$("#li"+currPage).addClass("liSelected");
-			$('html, body').animate({
-				scrollTop: $("#frame" + currPage).offset().top
-			}, 1000);
-			console.log("Curr page: " + currPage);
-			console.log("In object: " + serverReturn[currPage].Name);
-			sendRequest();
-		}
+		prevPage();
+		checkButtons();
 	});
 	
 	$("#li0").addClass("liSelected");
+}
+
+/**
+ * This function determines whether buttons should appear or not
+ */
+function checkButtons() {
+	if (currPage == 0) {
+		$("#prevStep").css("display", "none");
+	}
+	else if (currPage == serverReturn.length - 1) {
+		$("#nextStep").css("display", "none");
+	}
+	else {
+		$("#prevStep").css("display", "block");
+		$("#nextStep").css("display", "block");
+	}
+}
+
+/**
+ * This function moves to the next page
+ */
+function nextPage() {
+	console.log("Next Button pressed");
+	if (currPage + 1 < serverReturn.length) {
+		//Remove left bar selection
+		$(".liSelected").removeClass("liSelected");
+		
+		//Hide top page
+		$("#content" + currPage).fadeOut(400);
+		
+		//Add new left bar selection
+		currPage++;
+		$("#li" + currPage).css("display", "block");
+		$("#li"+currPage).addClass("liSelected");
+		
+		//Log and send
+		console.log("Curr page: " + currPage);
+		sendRequest();
+	}
+}
+
+/**
+ * This function moves to the previous page
+ */
+function prevPage() {
+	if (currPage > 0) {
+		$(".liSelected").removeClass("liSelected");
+		currPage--;
+		$("#content" + currPage).fadeIn(400);
+		$("#li"+currPage).addClass("liSelected");
+		sendRequest();
+	}
 }
 
 /**
@@ -204,10 +242,13 @@ function sendRequest() {
  */
 function hideWelcomeForm() {
 	console.log("Hide welcome form called");
+	
 	$("#submit").prop("disabled", true);
 	$(".welcomePage").addClass("hide");
 	$(".welcomePage").delay(3000).queue(function() {
 		$(".welcomePage").remove();
 		$(".contentPage").addClass("show");
+		nextPage();
+		checkButtons();
 	});
 }

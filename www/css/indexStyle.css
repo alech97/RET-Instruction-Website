@@ -5,7 +5,7 @@ body {
 	padding: 0;
 	position: absolute;
 	width: 100%;
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 form {
@@ -47,7 +47,7 @@ ul {
 
 li {
     text-align: center;
-    line-height: 4em;
+    line-height: 2.5em;
     font-family: Roboto, sans-serif;
     font-size: 1.2em;
     box-sizing: border-box;
@@ -204,6 +204,16 @@ li {
 	box-shadow: 2px 2px 3px black;
 }
 
+.innerContent {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
 #prevStep:active {
     box-shadow: none;
     background-color: whitesmoke;
@@ -211,17 +221,16 @@ li {
 
 iframe {
     position: relative;
-    height: 85vh;
     box-sizing: border-box;
     outline: none;
     overflow: hidden;
     border: none;
     width: 56vw;
     margin-left: calc(37% - 230px);
-    margin-bottom: 5vh;
     margin-right: 5vw;
     max-width: 847px;
     min-width: 847px;
+	height: 100%;
 }
 
 .leftBar {
@@ -234,21 +243,22 @@ iframe {
     margin: 0;
     padding: 0;
     box-shadow: 2px 0px 2px rgb(121, 121, 121);
+    overflow: hidden;
 }
 
 .contentContainer {
     background-color: white;
-    height: calc(3 * 95vh);
+    height: 100%;
     left: 230px;
-    position: absolute;
-    top: 5%;
+    position: fixed;
     z-index: 0;
     margin: 0;
     padding: 0;
     width: -webkit-calc(100% - 230px);
     width:    -moz-calc(100% - 230px);
     width:         calc(100% - 230px);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 #submit {
