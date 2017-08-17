@@ -3,7 +3,6 @@ package website;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.google.appengine.api.datastore.Entity;
 
 /**
@@ -28,6 +27,8 @@ public class DataReader {
 		userMap = new HashMap<String, UserData>();
 		mapUsers();
 	}
+	
+	public 
 	
 	/**
 	 * This private helper function organizes data by name.
