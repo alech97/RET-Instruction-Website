@@ -23,6 +23,7 @@ public class DataHandler {
 	private static final String PageStr = "Page";
 	private static final String EntityStr = "Hint";
 	private static final String UserStr = "User";
+	private static final String Password = "Password";
        
     /**
      * Initialize a DataHandler object
@@ -98,13 +99,26 @@ public class DataHandler {
 	
 	/**
 	 * This method returns a DataReader of all User datastore entries.
-	 * @param Project The project of this query.
+	 * @param project The project of this query.
 	 * @return Returns a DataReader for user logs.
 	 */
 	public DataReader getUserLogs(String project) {
 		Query q = new Query("User").addSort("Date");
     	PreparedQuery pq = datastore.prepare(q);
 		return new DataReader(pq.asList(FetchOptions.Builder.withDefaults()));
+	}
+	
+	/**
+	 * This method checks whether or not a given password matches a password
+	 * stored on the database.
+	 * @param pass The password being checked
+	 * @return Returns true if the given password matches.
+	 */
+	public boolean checkPass(String pass) {
+		Query q = new Query(Password);
+		PreparedQuery pq = datastore.prepare(q);
+		Entity entity = pq.asSingleEntity();
+		return entity.getProperty("Edit").equals(pass);
 	}
     
     /**

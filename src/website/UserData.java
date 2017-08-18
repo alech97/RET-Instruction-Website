@@ -1,20 +1,20 @@
 package website;
 
+import java.util.Iterator;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 /**
  * This class manages a data object for a user log.  It is used to map
- * user logs to specific names.
+ * names to each person's list of site logs.  
  * @author Alec Helyar
  * @version 2017.2.25
  */
 public class UserData {
 	private String name;
 	/**
-	 * Maps a Date to a Linked page
+	 * A PriorityQueue organized using CustomDate comparables
 	 */
-	private Queue<Link> logs;
+	private PriorityQueue<Link> logs;
 	
 	/**
 	 * Default constructor
@@ -26,6 +26,31 @@ public class UserData {
 		this.setName(name);
 		logs = new PriorityQueue<Link>();
 		logs.add(new Link(date, page));
+	}
+	
+	/**
+	 * This method is used to retrieve data about this UserData
+	 * @return Returns this users' logs.
+	 */
+	public PriorityQueue<Link> getLogs() {
+		return logs;
+	}
+	
+	/**
+	 * This method returns a JSON formatted string representing itself.
+	 * Example: {"name":"ALEC", "logs":[LinkStr, LinkStr, ...]}
+	 * @return Returns a JSON string of itself.
+	 */
+	public String getJSON() {
+		Iterator<Link> iter = logs.iterator();
+		String retStr = "{\"name\":\"" + name + "\", \"logs\": [" + 
+				iter.next().getJSON();
+		while (iter.hasNext()) {
+			retStr += ", ";
+			retStr += iter.next().getJSON();
+		}
+		retStr += "]}";
+		return retStr;
 	}
 	
 	/**
@@ -49,52 +74,5 @@ public class UserData {
 	 */
 	public void addLink(String date, String page) {
 		logs.add(new Link(date, page));
-	}
-
-	/**
-	 * This class links the date a user entered a page to a page name.
-	 * @author Alec Helyar
-	 * @version 2017.2.25
-	 */
-	private class Link implements Comparable<Link> {
-		private CustomDate date;
-		private String page;
-		
-		/**
-		 * Default constructor for a Link object.
-		 * @param da The date of this entry.
-		 * @param pa The page name of this entry.
-		 */
-		public Link(String da, String pa) {
-			date = new CustomDate(da);
-			page = pa;
-		}
-
-		/**
-		 * Compares the dates of a link.  Should sort by first date first.
-		 * @param otherLink the link being compared to.
-		 * @return Returns negative if less than, 0 if equal to, or positive
-		 * 		if greater than.
-		 */
-		@Override
-		public int compareTo(Link otherLink) {
-			return date.compareTo(otherLink.getDate());
-		}
-		
-		/**
-		 * This method returns the date of this object.
-		 * @return Returns the date of this object
-		 */
-		public CustomDate getDate() {
-			return date;
-		}
-		
-		/**
-		 * This method returns the Page name of this object.
-		 * @return Returns the name of this link.
-		 */
-		public String getPage() {
-			return page;
-		}
 	}
 }

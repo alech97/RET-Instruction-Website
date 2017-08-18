@@ -45,21 +45,21 @@ public class CustomDate implements Comparable<CustomDate> {
 	/**
 	 * This method loads values from a CustomDate string
 	 */
-	public void setDateValues() {
+	private void setDateValues() {
 		//Set month
 		switch (date.substring(0,3)) {
-			case "Jan" : setMonth(1);
-			case "Feb" : setMonth(2);
-			case "Mar" : setMonth(3);
-			case "Apr" : setMonth(4);
-			case "May" : setMonth(5);
-			case "Jun" : setMonth(6);
-			case "Jul" : setMonth(7);
-			case "Aug" : setMonth(8);
-			case "Sep" : setMonth(9);
-			case "Oct" : setMonth(10);
-			case "Nov" : setMonth(11);
-			case "Dec" : setMonth(12);
+			case "Jan" : setMonth(1); break;
+			case "Feb" : setMonth(2); break;
+			case "Mar" : setMonth(3); break;
+			case "Apr" : setMonth(4); break;
+			case "May" : setMonth(5); break;
+			case "Jun" : setMonth(6); break;
+			case "Jul" : setMonth(7); break;
+			case "Aug" : setMonth(8); break;
+			case "Sep" : setMonth(9); break;
+			case "Oct" : setMonth(10); break;
+			case "Nov" : setMonth(11); break;
+			case "Dec" : setMonth(12); break;
 		}
 		
 		//Set year
@@ -178,6 +178,13 @@ public class CustomDate implements Comparable<CustomDate> {
 	 */
 	public void setMonth(int month) {
 		this.month = month;
+	}
+	
+	/**
+	 * @return Returns a string representing this object.
+	 */
+	public String getDateString() {
+		return date;
 	}
 
 	/**

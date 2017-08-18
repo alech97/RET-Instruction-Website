@@ -1,9 +1,4 @@
 package website;
-/**
- * @author Alec Helyar
- * @version 2017.6.28
- * Handles user traffic
- */
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 /**
- * Servlet implementation class TrafficHandler
+ * Servlet implementation class TrafficHandler.
+ * This class handles REST requests received.  All requests should be 
+ * POST however, since user data is used.
  */
 public class TrafficHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -30,6 +27,8 @@ public class TrafficHandler extends HttpServlet {
 	}
 
 	/**
+	 * This method handles a GET request received, but there should be no GET
+	 * requests.  So it does nothing.
 	 * @see HttpServlet#doGet(HttpServletRequest request, 
 	 * 		HttpServletResponse response)
 	 */
@@ -40,27 +39,41 @@ public class TrafficHandler extends HttpServlet {
 	}
 
 	/**
+	 * This method handles a Post request being received
 	 * @see HttpServlet#doPost(HttpServletRequest request, 
 	 * 		HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse 
 			response) throws ServletException, IOException {
-		System.out.println("****Request received****");
+		String check;
+		
+		//Create buffered reader
 		BufferedReader bR = request.getReader();
 		String requestStr = bR.readLine();
-		System.out.println(requestStr);
+
+		//Create UserEntry from request string
 		UserEntry user = new Gson().fromJson(requestStr, UserEntry.class);
 		
-		System.out.println(user.toString());
-		Date date = new Date();
-		String dateAndTime = date.toString().substring(4);
-		
-		dataHandler.logUser(user.getFirstName(), user.getLastName(), 
-				request.getRemoteAddr(), dateAndTime.toString(), user.getPage());
-		
+		//Check if POST request contained a correct password
+		if (user.getEdit() != null && user.getEdit().length() > 0 
+				&& dataHandler.checkPass(user.getEdit())) {
+			//Retrieve user log data for admin page
+			DataReader dataReader = dataHandler.getUserLogs(user.getActivity());
+			check = "{\"pages\":" + dataHandler.getPages(user.getActivity()) + dataReader.getJSON();
+		}
+		else {
+			//Create new Date and time
+			Date date = new Date();
+			String dateAndTime = date.toString().substring(4);
+			
+			//Log user using dataHandler
+			dataHandler.logUser(user.getFirstName(), user.getLastName(), 
+					request.getRemoteAddr(), dateAndTime.toString(), user.getPage());
+			
+			//Create response
+			check = dataHandler.getPages(user.getActivity());
+		}
 		response.setContentType("application/json");
-		String check = dataHandler.getPages(user.getActivity());
-		System.out.println(check);
 		response.getWriter().write(check);
 		response.getWriter().close();
 	}
@@ -74,22 +87,45 @@ public class TrafficHandler extends HttpServlet {
 		private String lastName;
 		private String activity;
 		private String page;
+		private String edit;
 		
 		/**
 		 * Default constructor
 		 * @param fName first name
 		 * @param lName last name
 		 * @param act The current activity
+		 * @param edit The possible password used
 		 * @param page The current page
 		 */
 		@SuppressWarnings("unused")
-		public UserEntry(String fName, String lName, String act, String page) {
+		public UserEntry(String fName, String lName, String act, String edit, String page) {
 			setFirstName(fName);
 			setLastName(lName);
 			setActivity(act);
 			setPage(page);
+			setEdit(edit);
 		}
 		
+		/**
+		 * Sets edit 
+		 * @param edit Sets this user's edit to this parameter
+		 */
+		private void setEdit(String edit) {
+			this.edit = edit;
+		}
+		
+		/**
+		 * Returns edit
+		 * @return This user's edit
+		 */
+		private String getEdit() {
+			return edit;
+		}
+
+		/**
+		 * Returns a string of the form "First: Alec, Last: Helyar, Activity: Projectile Motion"
+		 * @return Returns a string representation of this user.
+		 */
 		@Override
 		public String toString() {
 			return "First: " + firstName + ", Last: " + 
