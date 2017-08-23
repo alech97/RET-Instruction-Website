@@ -1,5 +1,7 @@
 # RET Instruction Website
-This is a repository for a web application designed for my NC State RET research team over the summer of 2017.  UPDATE: If the submit button is slow, it's because I've cut down the amount of resources allocated to it now that the research is over.
+This is a repository for a web application designed for my NC State RET research team over the summer of 2017.  
+
+**UPDATE:** If the submit button is slow, it's because I've cut down the amount of resources allocated to it now that the research is over.
 
 ![](examplepage.png)
 ## RET Research at NC State - [engr.ncsu.edu/outreach/ret/](https://www.engr.ncsu.edu/outreach/ret/)
